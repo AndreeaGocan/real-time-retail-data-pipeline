@@ -143,14 +143,26 @@ The project intentionally generates problematic records to simulate realistic bu
 * Inconsistent text formatting
 * Corrupted business logic
 
-## Future Improvements
+## Future Enhancements
 
-Planned future improvements include:
+* Azure Blob Storage / Azure Data Lake integration
+* Databricks implementation with Delta Lake
+* Lakehouse architecture using the Medallion (Bronze, Silver, Gold) approach
+* Star and Snowflake schema modeling
+* Automated data quality monitoring and validation reporting
+* Pipeline health and execution monitoring
+* Business alerting and anomaly detection
+* Power BI executive dashboards
 
-* Automated data quality checks
-* Spark streaming transformations
-* Alerting and monitoring systems
-* Power BI dashboards
-* Data warehouse integration
+## Planned Monitoring Features
+
+* Automated alerts when sales drop below historical averages
+* Notifications for unusual spikes or declines in product demand
+* Pipeline status monitoring for ingestion and transformation jobs
+* Data quality reports highlighting failed validation checks
+* Dashboard refresh and data pipeline execution tracking
+* Exception reporting for missing, invalid, or inconsistent records
+
+
 * Pipeline orchestration
 * Real-time business triggers
