@@ -39,6 +39,51 @@ The project follows a layered data architecture approach:
 
 This structure simulates real-world ETL and modern data engineering workflows.
 
+## Current Project Status
+
+### Completed
+
+* ✅ Synthetic retail data generation
+* ✅ Kafka Producer for streaming retail orders
+* ✅ Kafka Consumer for data ingestion
+* ✅ Bronze Layer implementation
+* ✅ Orders Silver Layer implementation
+* ✅ Data quality validation framework
+
+### Orders Silver Layer Features
+
+The Orders Silver Layer performs data cleaning and validation before data is passed to downstream layers.
+
+Implemented checks include:
+
+* Standardized mixed date formats into a consistent DateType format
+* Removed future order dates
+* Removed duplicate order records
+* Removed invalid customer IDs
+* Removed invalid product IDs
+* Removed invalid supplier IDs
+* Removed missing foreign keys
+* Removed negative quantities
+* Validated sales calculations against quantity × unit price
+* Removed invalid sales values
+
+### Project Roadmap
+
+| Phase                                         | Status         |
+| --------------------------------------------- | -------------- |
+| Data Generation                               | ✅ Completed    |
+| Kafka Streaming                               | ✅ Completed    |
+| Bronze Layer                                  | ✅ Completed    |
+| Orders Silver Layer                           | ✅ Completed    |
+| Customer Silver Layer                         | 🔄 In Progress |
+| Product Silver Layer                          | ⏳ Planned      |
+| Supplier Silver Layer                         | ⏳ Planned      |
+| Employee Silver Layer                         | ⏳ Planned      |
+| Gold Layer                                    | ⏳ Planned      |
+| Power BI Dashboard                            | ⏳ Planned      |
+| Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned      |
+
+
 ## Technologies Used
 
 * Python
