@@ -49,6 +49,7 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Bronze Layer implementation
 * ✅ Orders Silver Layer implementation
 * ✅ Data quality validation framework
+* ✅ Customer Silver Layer implementation
 
 ### Orders Silver Layer Features
 
@@ -67,6 +68,21 @@ Implemented checks include:
 * Validated sales calculations against quantity × unit price
 * Removed invalid sales values
 
+### Customer Silver Layer Features
+
+The Customer Silver Layer standardizes and validates customer records before they are passed to downstream analytical layers.
+
+Implemented checks include:
+
+* Standardized customer first names
+* Standardized customer last names
+* Handled missing country values
+* Calculated customer age from birthdate
+* Validated customer age against business rules (16–100 years old)
+* Identified future birthdates
+* Quarantined invalid customer records for investigation
+* Separated valid and rejected customer datasets
+
 ### Project Roadmap
 
 | Phase                                         | Status         |
@@ -75,8 +91,8 @@ Implemented checks include:
 | Kafka Streaming                               | ✅ Completed    |
 | Bronze Layer                                  | ✅ Completed    |
 | Orders Silver Layer                           | ✅ Completed    |
-| Customer Silver Layer                         | 🔄 In Progress |
-| Product Silver Layer                          | ⏳ Planned      |
+| Customer Silver Layer                         | ✅ Completed    |
+| Product Silver Layer                          | 🔄 In Progress  |
 | Supplier Silver Layer                         | ⏳ Planned      |
 | Employee Silver Layer                         | ⏳ Planned      |
 | Gold Layer                                    | ⏳ Planned      |
@@ -92,6 +108,8 @@ Implemented checks include:
 * Pandas
 * Docker
 * CSV-based storage layers
+* Git
+* GitHub
 
 ## Project Structure
 
@@ -113,7 +131,8 @@ KafkaLearning/
 │   └── streaming_orders_consumer.py
 │
 ├── transformations/
-│   └── silver_transform.py
+│   ├── silver_orders_transform.py
+│   └── silver_customers_transform.py
 │
 ├── docker-compose.yml
 ├── requirements.txt
@@ -164,5 +183,4 @@ The project intentionally generates problematic records to simulate realistic bu
 * Exception reporting for missing, invalid, or inconsistent records
 
 
-* Pipeline orchestration
-* Real-time business triggers
+
