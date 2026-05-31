@@ -50,6 +50,7 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Orders Silver Layer implementation
 * ✅ Data quality validation framework
 * ✅ Customer Silver Layer implementation
+* ✅ Product Silver Layer implementation
 
 ### Orders Silver Layer Features
 
@@ -83,6 +84,21 @@ Implemented checks include:
 * Quarantined invalid customer records for investigation
 * Separated valid and rejected customer datasets
 
+## Product Silver Layer Features
+
+The Product Silver Layer standardizes and validates product records before they are passed to downstream analytical layers.
+
+Implemented checks include:
+
+* Standardized product names
+* Standardized product categories
+* Preserved original brand values
+* Identified products with missing unit prices
+* Identified products with negative stock quantities
+* Validated supplier references against the supplier dataset
+* Quarantined invalid product records for investigation
+* Separated valid and rejected product datasets
+
 ### Project Roadmap
 
 | Phase                                         | Status         |
@@ -92,8 +108,8 @@ Implemented checks include:
 | Bronze Layer                                  | ✅ Completed    |
 | Orders Silver Layer                           | ✅ Completed    |
 | Customer Silver Layer                         | ✅ Completed    |
-| Product Silver Layer                          | 🔄 In Progress  |
-| Supplier Silver Layer                         | ⏳ Planned      |
+| Product Silver Layer                          | ✅ Completed    |     
+| Supplier Silver Layer                         | 🔄 In Progress  |
 | Employee Silver Layer                         | ⏳ Planned      |
 | Gold Layer                                    | ⏳ Planned      |
 | Power BI Dashboard                            | ⏳ Planned      |
@@ -132,7 +148,9 @@ KafkaLearning/
 │
 ├── transformations/
 │   ├── silver_orders_transform.py
-│   └── silver_customers_transform.py
+│   ├── silver_customers_transform.py
+│   └── silver_products_transform.py
+│    
 │
 ├── docker-compose.yml
 ├── requirements.txt
