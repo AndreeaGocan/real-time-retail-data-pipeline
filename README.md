@@ -51,8 +51,9 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Data quality validation framework
 * ✅ Customer Silver Layer implementation
 * ✅ Product Silver Layer implementation
+* ✅ Supplier Silver Layer implementation
 
-### Orders Silver Layer Features
+## Orders Silver Layer Features
 
 The Orders Silver Layer performs data cleaning and validation before data is passed to downstream layers.
 
@@ -69,7 +70,7 @@ Implemented checks include:
 * Validated sales calculations against quantity × unit price
 * Removed invalid sales values
 
-### Customer Silver Layer Features
+## Customer Silver Layer Features
 
 The Customer Silver Layer standardizes and validates customer records before they are passed to downstream analytical layers.
 
@@ -99,6 +100,20 @@ Implemented checks include:
 * Quarantined invalid product records for investigation
 * Separated valid and rejected product datasets
 
+## Supplier Silver Layer Features
+
+The Supplier Silver Layer performs data quality validation on supplier records before they are used by downstream analytical processes.
+
+Implemented checks include:
+
+* Missing supplier ID validation
+* Supplier ID uniqueness validation
+* Missing supplier name validation
+* Missing email validation
+* Lead time validation
+* Reliability score validation (0-100 range)
+* Supplier quality audit reporting
+
 ### Project Roadmap
 
 | Phase                                         | Status         |
@@ -109,8 +124,8 @@ Implemented checks include:
 | Orders Silver Layer                           | ✅ Completed    |
 | Customer Silver Layer                         | ✅ Completed    |
 | Product Silver Layer                          | ✅ Completed    |     
-| Supplier Silver Layer                         | 🔄 In Progress  |
-| Employee Silver Layer                         | ⏳ Planned      |
+| Supplier Silver Layer                         | ✅ Completed    |
+| Employee Silver Layer                         | 🔄 In Progress  |
 | Gold Layer                                    | ⏳ Planned      |
 | Power BI Dashboard                            | ⏳ Planned      |
 | Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned      |
