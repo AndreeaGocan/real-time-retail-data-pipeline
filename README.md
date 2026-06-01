@@ -52,6 +52,7 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Customer Silver Layer implementation
 * ✅ Product Silver Layer implementation
 * ✅ Supplier Silver Layer implementation
+* ✅ Employee Silver Layer implementation
 
 ## Orders Silver Layer Features
 
@@ -114,6 +115,21 @@ Implemented checks include:
 * Reliability score validation (0-100 range)
 * Supplier quality audit reporting
 
+## Employee Silver Layer Features
+
+The Employee Silver Layer standardizes and validates employee records before they are used by downstream analytical processes.
+
+Implemented checks include:
+
+* Standardized department names
+* Preserved IT department abbreviation
+* Standardized country values
+* Converted manager IDs to the correct integer data type
+* Validated manager references against existing employee records
+* Allowed null manager IDs for top-level management positions
+* Performed employee-manager integrity validation
+
+
 ### Project Roadmap
 
 | Phase                                         | Status         |
@@ -125,8 +141,8 @@ Implemented checks include:
 | Customer Silver Layer                         | ✅ Completed    |
 | Product Silver Layer                          | ✅ Completed    |     
 | Supplier Silver Layer                         | ✅ Completed    |
-| Employee Silver Layer                         | 🔄 In Progress  |
-| Gold Layer                                    | ⏳ Planned      |
+| Employee Silver Layer                         | ✅ Completed    |
+| Gold Layer                                    | 🔄 In Progress  |
 | Power BI Dashboard                            | ⏳ Planned      |
 | Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned      |
 
@@ -165,7 +181,8 @@ KafkaLearning/
 │   ├── silver_orders_transform.py
 │   ├── silver_customers_transform.py
 │   └── silver_products_transform.py
-│    
+│   ├── silver_suppliers_transform.py
+│   └── silver_employees_transform.py
 │
 ├── docker-compose.yml
 ├── requirements.txt
