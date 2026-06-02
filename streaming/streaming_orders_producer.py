@@ -14,12 +14,14 @@ base_path = os.path.dirname(
 
 products_path = os.path.join(
     base_path,
+    '..',
     'bronze',
     'bronze_products.csv'
 )
 
 customers_path = os.path.join(
     base_path,
+    '..',
     'bronze',
     'bronze_customers.csv'
 )
@@ -43,6 +45,26 @@ country_preferences = {
     'Germany': [1,2,3,13,14,15],
     'Spain': [4,5,8,11]
 }
+
+payment_methods = [
+   'Credit Card',
+   'Debit Card',
+   'PayPal',
+   'Bank Transfer'
+]
+
+channels = [
+   'Online',
+   'Mobile App',
+   'Store'
+]
+
+discount_codes = [
+   None,
+   'WELCOME5',
+   'SUMMER10',
+   'VIP15'
+]
 
 customer_df = pd.read_csv(
     customers_path
@@ -103,6 +125,19 @@ while True:
 
         quantity = random.randint(1, 3)
 
+        status = random.choices(
+            ['Completed', 'Pending', 'Returned', 'Cancelled'],
+            weights=[85, 5, 7, 3]
+        )[0]
+
+        sales_amount = quantity * unit_price
+
+        if status == 'Cancelled':
+            sales_amount = 0
+
+        elif status == 'Returned':
+            sales_amount = -sales_amount
+
         supplier_id = supplier_lookup[
             product_id
         ]
@@ -125,10 +160,35 @@ while True:
 
             'unit_price': unit_price,
 
-            'sales': quantity * unit_price,
+            'sales': sales_amount,
 
             'order_date': current_day.strftime('%Y-%m-%d')
         }
+
+        order_details = {
+
+            'order_id': order_id,
+
+            'customer_id': selected_customer,
+
+            'order_date': current_day.strftime('%Y-%m-%d'),
+
+            'order_status': status,
+
+            'payment_method': random.choice(
+                 payment_methods
+            ),
+
+            'channel': random.choice(
+                channels
+            ),
+
+            'discount_code': random.choice(
+                 discount_codes
+            )
+        }
+
+     
 
         if random.random() < 0.01:
            order['order_id'] = order_id - 1
@@ -160,9 +220,16 @@ while True:
             value=order
         )
 
+        producer.send(
+            'order_details',
+             value=order_details
+        )
+
         order_id += 1
 
         print('Sent:', order)
+
+        print('Order Details:', order_details)
 
         time.sleep(1)
 

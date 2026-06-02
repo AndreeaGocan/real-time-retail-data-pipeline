@@ -44,8 +44,8 @@ This structure simulates real-world ETL and modern data engineering workflows.
 ### Completed
 
 * ✅ Synthetic retail data generation
-* ✅ Kafka Producer for streaming retail orders
-* ✅ Kafka Consumer for data ingestion
+* ✅ Kafka Producer for streaming retail sales and order details
+* ✅ Multiple Kafka Consumers for Bronze layer ingestion
 * ✅ Bronze Layer implementation
 * ✅ Orders Silver Layer implementation
 * ✅ Data quality validation framework
@@ -53,6 +53,8 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Product Silver Layer implementation
 * ✅ Supplier Silver Layer implementation
 * ✅ Employee Silver Layer implementation
+* ✅ Order Details Kafka Stream
+* ✅ Order Details Silver Layer implementation
 
 ## Orders Silver Layer Features
 
@@ -128,6 +130,24 @@ Implemented checks include:
 * Validated manager references against existing employee records
 * Allowed null manager IDs for top-level management positions
 * Performed employee-manager integrity validation
+* Validated employee salary values
+* Removed employees with missing or invalid salaries
+
+## Order Details Silver Layer Features
+
+The Order Details Silver Layer validates transactional order metadata before it is passed to downstream analytical layers.
+
+Implemented checks include:
+
+* Order ID validation
+* Order ID uniqueness validation
+* Customer ID validation
+* Order status validation
+* Payment method validation
+* Sales channel validation
+* Discount code validation
+* Future order date validation
+* Order details quality audit reporting
 
 
 ### Project Roadmap
@@ -175,14 +195,16 @@ KafkaLearning/
 │
 ├── streaming/
 │   ├── streaming_orders_producer.py
-│   └── streaming_orders_consumer.py
+│   ├──  streaming_orders_consumer.py
+│   └── streaming_order_details_consumer.py
 │
 ├── transformations/
 │   ├── silver_orders_transform.py
 │   ├── silver_customers_transform.py
-│   └── silver_products_transform.py
+│   ├── silver_products_transform.py
 │   ├── silver_suppliers_transform.py
-│   └── silver_employees_transform.py
+│   ├── silver_employees_transform.py
+│   └── silver_order_details_transform.py
 │
 ├── docker-compose.yml
 ├── requirements.txt

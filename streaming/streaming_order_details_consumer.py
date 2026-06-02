@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 consumer = KafkaConsumer(
-    "orders",
+    "order_details",
     bootstrap_servers='localhost:9092',
     auto_offset_reset='latest',
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
@@ -19,7 +19,7 @@ bronze_path = os.path.join(
     base_path,
     '..',
     'bronze',
-    'bronze_orders.csv'
+    'bronze_order_details.csv'
 )
 
 file_exists = os.path.exists(
@@ -37,16 +37,14 @@ with open(
     if not file_exists:
 
         writer.writerow([
-            "order_id",
-            "customer_id",
-            "product_id",
-            "employee_id",
-            "supplier_id",
-            "quantity",
-            "unit_price",
-            "sales",
-            "order_date",
-            "ingested_at"
+               "order_id",
+               "customer_id",
+               "order_date",
+               "order_status",
+               "payment_method",
+               "channel",
+               "discount_code",
+               "ingested_at"
         ])
 
     print("Listening and saving orders...\n")
@@ -55,26 +53,24 @@ with open(
 
         try:
 
-            order = message.value
+            order_details = message.value
 
             writer.writerow([
 
-                order["order_id"],
-                order["customer_id"],
-                order["product_id"],
-                order["employee_id"],
-                order["supplier_id"],
-                order["quantity"],
-                order["unit_price"],
-                order["sales"],
-                order["order_date"],
+                order_details["order_id"],
+                order_details["customer_id"],
+                order_details["order_date"],
+                order_details["order_status"],
+                order_details["payment_method"],
+                order_details["channel"],
+                order_details["discount_code"],
                 datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
             ])
 
             file.flush()
 
-            print(f"Saved: {order}")
+            print(f"Saved: {order_details}")
 
         except Exception as e:
             print(f"error processing message: {e}")

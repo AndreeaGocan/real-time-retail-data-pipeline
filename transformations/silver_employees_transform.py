@@ -121,6 +121,24 @@ else:
         "Manager ID integrity check passed."
     )
 
+#================================================================
+# Quality Check: Invalid Salaries
+#================================================================
+
+invalid_salary = clean_df.filter(
+    col('salary').isNull() |
+    (col('salary') <= 0)
+)
+
+#=================================================================
+# Remove Invalid Salaries
+#=================================================================
+
+clean_df = clean_df.filter(
+    col('salary').isNotNull() &
+    (col('salary') > 0)
+)
+
 clean_df.printSchema()
 
 clean_df.show()
@@ -143,6 +161,10 @@ print(
 
 print(
     f'Silver Employees saved to: {silver_path}'
+)
+
+print(
+    f'Invalid salaries: {invalid_salary.count()}'
 )
 
 spark.stop()

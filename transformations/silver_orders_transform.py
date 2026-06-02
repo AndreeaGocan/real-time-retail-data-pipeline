@@ -424,23 +424,13 @@ clean_df = clean_df.filter(
 
 clean_df.show()
 
-#===================================================================
-# Quality Check: Invalid Sales
-#===================================================================
+#===========================================================
+# Quality Check: Zero or Negative Sales
+#===========================================================
 
 clean_df.filter(
     col('sales') <= 0
 ).show()
-
-#===================================================================
-# Remove Invalid Sales
-#===================================================================
-
-clean_df = clean_df.filter(
-    col('sales') > 0
-)
-
-clean_df.show()
 
 #===================================================================
 # Quality Check: Missing Sales
@@ -463,44 +453,6 @@ clean_df = clean_df.withColumn(
         col('quantity') * col('unit_price')
     ).otherwise(
         col('sales')
-    )
-)
-
-clean_df.show()
-
-#===================================================================
-# Quality Check: Sales Consistency
-#===================================================================
-
-from pyspark.sql.functions import col, round
-
-sales_check_df = clean_df.filter(
-    round(col('sales'), 2) !=
-    round(
-        col('quantity') * col('unit_price'),
-          2
-          )
-)
-
-sales_check_df.show()
-
-#===================================================================
-# Store Inconsistent Sales for Further Investigation
-#===================================================================
-
-inconsistent_sales_df = sales_check_df
-
-inconsistent_sales_df.show()
-
-#===================================================================
-# Remove Inconsistent Sales
-#===================================================================
-
-clean_df = clean_df.filter(
-    round(col('sales'), 2) ==
-    round(
-        col('quantity') * col('unit_price'),
-        2
     )
 )
 
