@@ -28,6 +28,15 @@ df.printSchema()
 clean_df = df
 
 #==============================================================
+# Employee Names Consistency
+#==============================================================
+
+clean_df = clean_df.withColumnRenamed(
+    "employee_name",
+    "employee_full_name"
+)
+
+#==============================================================
 # Standardizing Department Names
 #==============================================================
 
@@ -150,7 +159,11 @@ silver_path = os.path.join(
     'silver_employees.csv'
 )
 
-clean_df.toPandas().to_csv(
+pdf = clean_df.toPandas()
+
+pdf["manager_id"] = pdf["manager_id"].astype("Int64")
+
+pdf.to_csv(
     silver_path,
     index=False
 )

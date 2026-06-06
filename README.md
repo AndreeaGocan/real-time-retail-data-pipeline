@@ -55,6 +55,10 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Employee Silver Layer implementation
 * ✅ Order Details Kafka Stream
 * ✅ Order Details Silver Layer implementation
+* ✅ Gold Layer implementation
+* ✅ Customer Summary analytical view
+* ✅ Product Summary analytical view
+* ✅ Sales Summary analytical view
 
 ## Orders Silver Layer Features
 
@@ -149,6 +153,59 @@ Implemented checks include:
 * Future order date validation
 * Order details quality audit reporting
 
+## Gold Layer Features
+
+The Gold Layer transforms cleaned Silver datasets into business-ready analytical models using dimensional modeling principles.
+
+Implemented components include:
+
+## Dimension Views
+
+* Customer dimension containing demographic and geographic customer attributes
+* Product dimension containing product and category information
+* Employee dimension containing employee and management hierarchy information
+* Order dimension containing order metadata and transactional attributes
+
+## Fact Table
+
+* Centralized sales fact table
+* Foreign key relationships to business dimensions
+* Transaction-level sales metrics
+* Optimized structure for analytical reporting and dashboard consumption
+
+## Analytical Summary Views
+
+## Customer Summary
+
+Provides customer-level performance metrics including:
+
+* Total sales by customer
+* Customer lifetime value metrics
+* Purchase behavior analysis
+* Customer segmentation
+* Recency and lifecycle measurements
+
+## Product Summary
+
+Provides product-level analytical metrics including:
+
+* Product sales performance
+* Category rankings
+* Customer reach metrics
+* Product lifecycle analysis
+* Revenue and sales velocity measurements
+
+## Sales Summary
+
+Provides daily sales trend analysis including:
+
+* Daily revenue tracking
+* Day-over-day growth analysis
+* Previous-day sales comparisons
+* Rolling 7-day sales metrics
+* Business performance trend monitoring
+
+
 
 ### Project Roadmap
 
@@ -163,8 +220,8 @@ Implemented checks include:
 | Supplier Silver Layer                         | ✅ Completed    |
 | Employee Silver Layer                         | ✅ Completed    |
 | Order Details Silver Layer                    | ✅ Completed    |
-| Gold Layer                                    | 🔄 In Progress  |
-| Power BI Dashboard                            | ⏳ Planned      |
+| Gold Layer                                    | ✅ Completed    |
+| Power BI Dashboard                            | 🔄 In Progress  |
 | Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned      |
 
 
@@ -207,6 +264,17 @@ KafkaLearning/
 │   ├── silver_employees_transform.py
 │   └── silver_order_details_transform.py
 │
+├── gold/
+│   ├── gold.dim_customers.sql
+│   ├── gold.dim_products.sql
+│   ├── gold.dim_employees.sql
+│   ├── gold.dim_orders.sql
+│   ├── gold.fact_sales.sql
+│   ├── gold.customer_summary.sql
+│   ├── gold.products_summary.sql
+│   └── gold.sales_summary.sql
+│
+│
 ├── docker-compose.yml
 ├── requirements.txt
 ├── README.md
@@ -220,7 +288,9 @@ KafkaLearning/
 3. Consume streaming events into Bronze layer storage
 4. Simulate dirty and inconsistent real-world data
 5. Clean and standardize records in the Silver layer
-6. Prepare future analytical datasets in the Gold layer
+6. Build dimensional models and fact tables in the Gold layer
+7. Create analytical summary views for business reporting
+8. Prepare datasets for dashboarding and BI consumption
 
 ## Dirty Data Simulation
 

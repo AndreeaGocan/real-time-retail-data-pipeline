@@ -28,6 +28,15 @@ df.printSchema()
 clean_df = df
 
 #==============================================================
+# Standardizing Columns Names
+#==============================================================
+
+clean_df = clean_df.withColumnRenamed(
+    "created at",
+    "created_at"
+)
+
+#==============================================================
 # Standardizing Customers First Names
 #==============================================================
 
@@ -63,6 +72,18 @@ clean_df = clean_df.withColumn(
             col('last_name')
         )
     )
+)
+
+#==============================================================
+# Concatinating Customer first and last name to Full Name
+#==============================================================
+
+from pyspark.sql.functions import concat_ws
+
+clean_df = clean_df.withColumn(
+    'customer_full_name',
+    concat_ws(" ", col('first_name'), 
+              col('last_name'))
 )
 
 #==============================================================

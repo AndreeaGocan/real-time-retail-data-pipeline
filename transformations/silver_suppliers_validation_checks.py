@@ -85,3 +85,21 @@ print(
 print(
     'Supplier quality checks completed.'
 )
+
+silver_path = os.path.join(
+    base_path,
+    '..',
+    'silver',
+    'silver_suppliers.csv'
+)
+
+clean_df.toPandas().to_csv(
+    silver_path,
+    index=False
+)
+
+print(
+    f'Silver Suppliers saved to: {silver_path}'
+)
+
+spark.stop()
