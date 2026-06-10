@@ -22,6 +22,8 @@ df = spark.read.csv(
     inferSchema=True
 )
 
+df.select("order_date").show(20, False)
+
 df.show()
 df.printSchema()
 
@@ -66,26 +68,17 @@ clean_df.show()
 # Convert Dates to Date Type
 #==========================================================
 
-from pyspark.sql.functions import(
-    col,
-    when,
-    to_date
-)
+from pyspark.sql.functions import col, when, to_date
 
 clean_df = clean_df.withColumn(
-    'order_date',
+    "order_date",
     when(
-        col('order_date').contains('/'),
-        to_date(
-            col('order_date'),
-            'dd/MM/yyyy'
-        )
-    ).otherwise(
-        to_date(
-            col('order_date'),
-            'yyyy-MM-dd'
-        )
-    )
+        col("order_date").rlike(r"^\d{2}/\d{2}/\d{4}$"),
+        to_date(col("order_date"), "dd/MM/yyyy")
+    ).when(
+        col("order_date").rlike(r"^\d{4}-\d{2}-\d{2}$"),
+        to_date(col("order_date"), "yyyy-MM-dd")
+    ).otherwise(None)
 )
 
 #==========================================================
@@ -482,6 +475,64 @@ clean_df.filter(
     col('order_date') > current_date()
 ).show()
 
+
+#====================================================================
+# Check Up
+#====================================================================
+
+print("Invalid Customer IDs:")
+print(
+    clean_df.filter(
+        col('customer_id') == 999999
+    ).count()
+)
+
+print("Future Dates:")
+print(
+    clean_df.filter(
+        col('order_date') > current_date()
+    ).count()
+)
+
+print("Missing Employee IDs:")
+print(
+    clean_df.filter(
+        col('employee_id').isNull()
+    ).count()
+)
+
+print("Invalid Product IDs:")
+print(
+    clean_df.filter(
+        col('product_id') <= 0
+    ).count()
+)
+
+print("Invalid Supplier IDs:")
+print(
+    clean_df.filter(
+        col('supplier_id') <= 0
+    ).count()
+)
+
+print("Invalid Prices:")
+print(
+    clean_df.filter(
+        col('unit_price') <= 0
+    ).count()
+)
+
+print("Future Dates:", future_dates_df.count())
+
+print("Invalid Customers:", invalid_customer_ids.count())
+
+duplicate_orders = (
+    df.groupBy("order_id")
+      .count()
+      .filter(col("count") > 1)
+)
+
+print("Duplicate Orders:", duplicate_orders.count())
 #====================================================================
 # Saving Results
 #====================================================================

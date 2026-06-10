@@ -205,6 +205,28 @@ Provides daily sales trend analysis including:
 * Rolling 7-day sales metrics
 * Business performance trend monitoring
 
+The project includes three interactive Power BI dashboards built on top of the Gold analytical layer.
+
+Implemented dashboards include:
+
+• Sales Dashboard
+  - Revenue trends
+  - Order performance
+  - Rolling 7-day metrics
+  - Growth analysis
+
+• Product Dashboard
+  - Product performance analysis
+  - Category contribution
+  - Demand monitoring
+  - Revenue rankings
+
+• Customer Dashboard
+  - Customer segmentation
+  - Revenue contribution analysis
+  - Customer demographics
+  - Activity monitoring
+
 
 
 ### Project Roadmap
@@ -221,8 +243,12 @@ Provides daily sales trend analysis including:
 | Employee Silver Layer                         | ✅ Completed    |
 | Order Details Silver Layer                    | ✅ Completed    |
 | Gold Layer                                    | ✅ Completed    |
-| Power BI Dashboard                            | 🔄 In Progress  |
-| Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned      |
+| Power BI Dashboard                            | ✅ Completed    |
+| Pipeline Automation                           | 🔄 In Progress  |
+| Pipeline Health Monitoring                    | ⏳ Planned |
+| Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned |
+
+
 
 
 ## Technologies Used
@@ -264,16 +290,25 @@ KafkaLearning/
 │   ├── silver_employees_transform.py
 │   └── silver_order_details_transform.py
 │
-├── gold/
-│   ├── gold.dim_customers.sql
-│   ├── gold.dim_products.sql
-│   ├── gold.dim_employees.sql
-│   ├── gold.dim_orders.sql
-│   ├── gold.fact_sales.sql
-│   ├── gold.customer_summary.sql
-│   ├── gold.products_summary.sql
-│   └── gold.sales_summary.sql
+├── dimensions/
+│   ├── dim_customers.sql
+│   ├── dim_products.sql
+│   ├── dim_employees.sql
+│   └── dim_orders.sql
 │
+├── facts/
+│   └── fact_sales.sql
+│
+├──  summaries/
+│    ├── customer_summary.sql
+│    ├── product_summary.sql
+│    └── sales_summary.sql
+│
+├── dashboards/
+│   ├── sales_dashboard.png
+│   ├── product_performance_dashboard.png
+│   ├── customer_analytics_dashboard.png
+│   └── retail_analytics.pbix
 │
 ├── docker-compose.yml
 ├── requirements.txt
@@ -315,7 +350,6 @@ The project intentionally generates problematic records to simulate realistic bu
 * Automated data quality monitoring and validation reporting
 * Pipeline health and execution monitoring
 * Business alerting and anomaly detection
-* Power BI executive dashboards
 
 ## Planned Monitoring Features
 

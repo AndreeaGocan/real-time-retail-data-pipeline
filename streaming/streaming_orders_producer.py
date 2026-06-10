@@ -39,11 +39,36 @@ start_date = datetime.now() - timedelta(days=730)
 current_day = start_date
 
 country_preferences = {
-    'Cyprus': [4,5,6,10,11],
-    'UK': [1,3,4,6,13,15],
-    'Greece': [7,8,10,14],
-    'Germany': [1,2,3,13,14,15],
-    'Spain': [4,5,8,11]
+
+    'Cyprus': [
+        'Accessories',
+        'Networking',
+        'Mobile Devices'
+    ],
+
+    'UK': [
+        'Electronics',
+        'Mobile Devices',
+        'Gaming'
+    ],
+
+    'Greece': [
+        'Mobile Devices',
+        'Audio',
+        'Accessories'
+    ],
+
+    'Germany': [
+        'Electronics',
+        'Gaming',
+        'Networking'
+    ],
+
+    'Spain': [
+        'Audio',
+        'Mobile Devices',
+        'Accessories'
+    ]
 }
 
 payment_methods = [
@@ -74,12 +99,10 @@ products_df = pd.read_csv(
     products_path
 )
 
-price_lookup = dict(
-    zip(
-        products_df['product_id'],
-        products_df['unit_price']
-    )
-)
+valid_products = products_df[
+    (products_df['unit_price'].notna()) &
+    (products_df['supplier_id'].between(1, 10))
+].copy()
 
 customer_lookup = dict(
     zip(
@@ -88,19 +111,12 @@ customer_lookup = dict(
     )
 )
 
-supplier_lookup = dict(
-    zip(
-        products_df['product_id'],
-        products_df['supplier_id']
-    )
-)
-
 order_id = 5000
 
 
 while True:
 
-    orders_today = random.randint(3,15)
+    orders_today = random.randint(4,10)
 
     for i in range(orders_today):
 
@@ -113,34 +129,57 @@ while True:
         if customer_country not in country_preferences:
            continue
     
-        product_id = random.choice(
+        selected_category = random.choice(
             country_preferences[
-            customer_country
-            ]
+         customer_country
+         ]
         )
 
-        unit_price = price_lookup[
-            product_id
+        available_products = valid_products[
+            valid_products['category']
+            .str.strip()
+            .str.title()
+            == selected_category
         ]
 
-        quantity = random.randint(1, 3)
+        selected_product = available_products.sample(
+            1
+        ).iloc[0]
+
+        product_id = int(
+            selected_product['product_id']
+        )
+
+        unit_price = float(
+            selected_product['unit_price']
+        )
+
+        supplier_id = int(
+            selected_product['supplier_id']
+        )
+
+        print(
+         f'Category: {selected_category} | '
+         f'Product: {product_id}'
+        )
+
+        quantity = 1
 
         status = random.choices(
             ['Completed', 'Pending', 'Returned', 'Cancelled'],
             weights=[85, 5, 7, 3]
         )[0]
 
-        sales_amount = quantity * unit_price
+        sales_amount = round(
+            quantity * unit_price,
+            2
+        )
 
         if status == 'Cancelled':
             sales_amount = 0
 
         elif status == 'Returned':
             sales_amount = -sales_amount
-
-        supplier_id = supplier_lookup[
-            product_id
-        ]
 
         employee_id = random.randint(1, 18)
 
@@ -192,9 +231,6 @@ while True:
 
         if random.random() < 0.01:
            order['order_id'] = order_id - 1
-
-        if random.random() < 0.01:
-           order['quantity'] = -1
 
         if random.random() < 0.02:
            order['sales'] = order['sales'] + 100
