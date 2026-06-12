@@ -24,9 +24,18 @@ The pipeline generates realistic retail activity including customers, products, 
 
 The goal of the project is to build hands-on experience with modern data engineering workflows and realistic ETL challenges.
 
+The Medallion Architecture (Bronze, Silver, and Gold layers) was implemented in Azure Databricks and organized using Unity Catalog schemas.
+
 Powered by caffeine, Kafka, and vampire working hours.
 
-
+## Highlights
+* Built a Medallion Architecture (Bronze, Silver, Gold).
+* Implemented dimensional modeling using a star-schema analytical layer built with views.
+* Developed analytical summary views for reporting.
+* Integrated Azure Data Lake Storage and Azure Databricks.
+* Created Power BI dashboards for customer, product, and sales analytics.
+* Simulated real-world data quality issues and remediation workflows.
+* Designed a streaming ingestion pipeline using Apache Kafka.
 
 
 ## Architecture
@@ -59,99 +68,35 @@ This structure simulates real-world ETL and modern data engineering workflows.
 * ✅ Customer Summary analytical view
 * ✅ Product Summary analytical view
 * ✅ Sales Summary analytical view
+* ✅ Azure Data Lake Storage integration
+* ✅ Azure Databricks implementation
+* ✅ Gold dimensional model
+* ✅ Fact table implementation
+* ✅ Power BI dashboards
 
 ## Orders Silver Layer Features
 
 The Orders Silver Layer performs data cleaning and validation before data is passed to downstream layers.
 
-Implemented checks include:
-
-* Standardized mixed date formats into a consistent DateType format
-* Removed future order dates
-* Removed duplicate order records
-* Removed invalid customer IDs
-* Removed invalid product IDs
-* Removed invalid supplier IDs
-* Removed missing foreign keys
-* Removed negative quantities
-* Validated sales calculations against quantity × unit price
-* Removed invalid sales values
-
 ## Customer Silver Layer Features
 
 The Customer Silver Layer standardizes and validates customer records before they are passed to downstream analytical layers.
-
-Implemented checks include:
-
-* Standardized customer first names
-* Standardized customer last names
-* Handled missing country values
-* Calculated customer age from birthdate
-* Validated customer age against business rules (16–100 years old)
-* Identified future birthdates
-* Quarantined invalid customer records for investigation
-* Separated valid and rejected customer datasets
 
 ## Product Silver Layer Features
 
 The Product Silver Layer standardizes and validates product records before they are passed to downstream analytical layers.
 
-Implemented checks include:
-
-* Standardized product names
-* Standardized product categories
-* Preserved original brand values
-* Identified products with missing unit prices
-* Identified products with negative stock quantities
-* Validated supplier references against the supplier dataset
-* Quarantined invalid product records for investigation
-* Separated valid and rejected product datasets
-
 ## Supplier Silver Layer Features
 
 The Supplier Silver Layer performs data quality validation on supplier records before they are used by downstream analytical processes.
-
-Implemented checks include:
-
-* Missing supplier ID validation
-* Supplier ID uniqueness validation
-* Missing supplier name validation
-* Missing email validation
-* Lead time validation
-* Reliability score validation (0-100 range)
-* Supplier quality audit reporting
 
 ## Employee Silver Layer Features
 
 The Employee Silver Layer standardizes and validates employee records before they are used by downstream analytical processes.
 
-Implemented checks include:
-
-* Standardized department names
-* Preserved IT department abbreviation
-* Standardized country values
-* Converted manager IDs to the correct integer data type
-* Validated manager references against existing employee records
-* Allowed null manager IDs for top-level management positions
-* Performed employee-manager integrity validation
-* Validated employee salary values
-* Removed employees with missing or invalid salaries
-
 ## Order Details Silver Layer Features
 
 The Order Details Silver Layer validates transactional order metadata before it is passed to downstream analytical layers.
-
-Implemented checks include:
-
-* Order ID validation
-* Order ID uniqueness validation
-* Customer ID validation
-* Order status validation
-* Payment method validation
-* Sales channel validation
-* Discount code validation
-* Future order date validation
-* Order details quality audit reporting
 
 ## Gold Layer Features
 
@@ -168,7 +113,7 @@ Implemented components include:
 
 ## Fact Table
 
-* Centralized sales fact table
+* Centralized sales fact view
 * Foreign key relationships to business dimensions
 * Transaction-level sales metrics
 * Optimized structure for analytical reporting and dashboard consumption
@@ -207,25 +152,19 @@ Provides daily sales trend analysis including:
 
 The project includes three interactive Power BI dashboards built on top of the Gold analytical layer.
 
-Implemented dashboards include:
+## Power BI Dashboards
 
-• Sales Dashboard
-  - Revenue trends
-  - Order performance
-  - Rolling 7-day metrics
-  - Growth analysis
+### Sales Dashboard
 
-• Product Dashboard
-  - Product performance analysis
-  - Category contribution
-  - Demand monitoring
-  - Revenue rankings
+![Sales Dashboard](dashboards/Sales_Performance_dashboard.png)
 
-• Customer Dashboard
-  - Customer segmentation
-  - Revenue contribution analysis
-  - Customer demographics
-  - Activity monitoring
+### Products Dashboard
+
+![Product Dashboard](dashboards/Product_performance_dashboard.png)
+
+### Customers Dashboard
+
+![Customer Dashboard](dashboards/Customer_analytics_dashboard.png)
 
 
 
@@ -244,9 +183,10 @@ Implemented dashboards include:
 | Order Details Silver Layer                    | ✅ Completed    |
 | Gold Layer                                    | ✅ Completed    |
 | Power BI Dashboard                            | ✅ Completed    |
+| Lakehouse Expansion (Databricks + Delta Lake) | ✅ Completed    |
 | Pipeline Automation                           | 🔄 In Progress  |
 | Pipeline Health Monitoring                    | ⏳ Planned |
-| Lakehouse Expansion (Databricks + Delta Lake) | ⏳ Planned |
+
 
 
 
@@ -259,6 +199,12 @@ Implemented dashboards include:
 * Pandas
 * Docker
 * CSV-based storage layers
+* Azure Storage Account
+* Azure Data Lake Storage Gen2
+* Azure Databricks
+* Databricks SQL
+* Unity Catalog
+* Power BI
 * Git
 * GitHub
 
@@ -316,6 +262,24 @@ KafkaLearning/
 └── .gitignore
 ```
 
+## Architecture Diagram
+
+```text
+Data Generators
+        ↓
+Apache Kafka
+        ↓
+Azure Data Lake Storage
+        ↓
+Databricks Bronze
+        ↓
+Databricks Silver
+        ↓
+Databricks Gold
+        ↓
+Power BI Dashboards
+```
+
 ## Pipeline Flow
 
 1. Generate retail datasets (customers, employees, suppliers, products)
@@ -323,7 +287,7 @@ KafkaLearning/
 3. Consume streaming events into Bronze layer storage
 4. Simulate dirty and inconsistent real-world data
 5. Clean and standardize records in the Silver layer
-6. Build dimensional models and fact tables in the Gold layer
+6. Build dimensional models and fact views in the Gold layer
 7. Create analytical summary views for business reporting
 8. Prepare datasets for dashboarding and BI consumption
 
@@ -340,13 +304,9 @@ The project intentionally generates problematic records to simulate realistic bu
 * Inconsistent text formatting
 * Corrupted business logic
 
-## Future Enhancements
+## Next Steps
 
-* Azure Blob Storage / Azure Data Lake integration
-* Databricks implementation with Delta Lake
-* Lakehouse architecture using the Medallion (Bronze, Silver, Gold) approach
 * Star and Snowflake schema modeling
-* PostgreSQL Data Warehouse implementation
 * Automated data quality monitoring and validation reporting
 * Pipeline health and execution monitoring
 * Business alerting and anomaly detection
