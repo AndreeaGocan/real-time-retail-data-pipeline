@@ -48,15 +48,3 @@ SELECT
     order_date
 FROM silver.sales;
 
-CREATE VIEW gold.fact_sales AS
-
-SELECT
-	order_id,
-	customer_id,
-	product_id,
-	employee_id,
-	quantity,
-	unit_price,
-	sales,
-	order_date
-FROM silver.sales

@@ -70,7 +70,7 @@ for customer_id in range(1000,11000):
 
         'birthdate': birthdate,
 
-        'created at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        'created_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
 
     if random.random() < 0.01:
